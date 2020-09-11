@@ -1,0 +1,26 @@
+note over browser:
+user writes "message" in the text field
+and clicks the submit button
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note, Form Data [{ note: "message" }]
+note over server:
+data from request body is used to create a new note object.
+new note is added to existing notes.
+end note
+server-->browser: HTTP response, status 302 - redirect to location: /exampleapp/notes
+
+note over browser:
+redirect-response causes a page reload
+end note
+
+browser->server: HTTP GET https://studies.cs.helsinki.fi/exampleapp/notes
+server-->browser: HTML-code
+
+note over browser:
+page and related files load as previously.
+end note
+
+note over browser:
+added note is included in the JSON file and rendered in the list.
+end note
