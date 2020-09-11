@@ -1,0 +1,22 @@
+note over browser:
+user writes "message" in the text field
+and clicks the submit button
+end note
+
+note over browser:
+javascript event handler prevents
+the default behavior of the form.
+end note
+
+note over browser:
+javascript event handler creates a new note,
+adds it to the list, rerenders the list using the DOM-API
+and sends the new note data to the server.
+end note
+
+browser->server: HTTP POST https://studies.cs.helsinki.fi/exampleapp/new_note_spa, Content-type: JSON, body: {"content":"message","date":"2020-..."}
+note over server:
+data from request body is used to create a new note object.
+new note is added to existing notes.
+end note
+server-->browser: HTTP response, status 201 - created, data: {"message":"note created"}
