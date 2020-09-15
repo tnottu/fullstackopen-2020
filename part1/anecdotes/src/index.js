@@ -2,13 +2,31 @@ import React, { useState } from 'react'
 import ReactDOM from 'react-dom'
 
 function getRandomIntInclusive(min, max) {
-  const minRounded = Math.ceil(min);
-  const maxRounded = Math.floor(max);
-  return Math.floor(Math.random() * (maxRounded - minRounded + 1) + minRounded);
+  const minRounded = Math.ceil(min)
+  const maxRounded = Math.floor(max)
+  return Math.floor(Math.random() * (maxRounded - minRounded + 1) + minRounded)
 }
 
 function getRandomArrayIndex(array) {
   return getRandomIntInclusive(0, array.length - 1)
+}
+
+const MostVotes = ({ anecdotes, points }) => {
+
+  const highestPointsCount = Math.max(...points)
+  const highestPointsAnecdoteIndex = points.findIndex(pointCount => pointCount === highestPointsCount)
+
+  if (!highestPointsCount) {
+    return null
+  }
+
+  return (
+    <>
+      <h1>Anecdote with most votes</h1>
+      <div>{anecdotes[highestPointsAnecdoteIndex]}</div>
+      <div>has {highestPointsCount} votes</div>
+    </>
+  )
 }
 
 const App = ({ anecdotes }) => {
@@ -27,10 +45,12 @@ const App = ({ anecdotes }) => {
 
   return (
     <div>
+      <h1>Anecdote of the day</h1>
       <div>{anecdotes[selected]}</div>
       <div>has {points[selected]} votes</div>
       <button onClick={handleVoteClick}>vote</button>
       <button onClick={handleNextClick}>next anecdote</button>
+      <MostVotes anecdotes={anecdotes} points={points} />
     </div>
   )
 }
