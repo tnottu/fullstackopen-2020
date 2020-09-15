@@ -7,13 +7,30 @@ function getRandomIntInclusive(min, max) {
   return Math.floor(Math.random() * (maxRounded - minRounded + 1) + minRounded);
 }
 
-const App = (props) => {
-  const [selected, setSelected] = useState(getRandomIntInclusive(0, props.anecdotes.length - 1))
+function getRandomArrayIndex(array) {
+  return getRandomIntInclusive(0, array.length - 1)
+}
+
+const App = ({ anecdotes }) => {
+  const [selected, setSelected] = useState(getRandomArrayIndex(anecdotes))
+  const [points, setPoints] = useState(Array(anecdotes.length).fill(0))
+
+  const handleNextClick = () => {
+    setSelected(getRandomArrayIndex(anecdotes))
+  }
+
+  const handleVoteClick = () => {
+    const pointsCopy = [...points]
+    pointsCopy[selected] += 1
+    setPoints(pointsCopy)
+  }
 
   return (
     <div>
-      <p>{props.anecdotes[selected]}</p>
-      <button onClick={() => setSelected(getRandomIntInclusive(0, props.anecdotes.length - 1))}>next anecdote</button>
+      <div>{anecdotes[selected]}</div>
+      <div>has {points[selected]} votes</div>
+      <button onClick={handleVoteClick}>vote</button>
+      <button onClick={handleNextClick}>next anecdote</button>
     </div>
   )
 }
