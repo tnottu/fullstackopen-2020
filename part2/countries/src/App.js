@@ -7,9 +7,10 @@ import CountryList from './components/CountryList'
 const App = () => {
   const [ countries, setCountries ] = useState([])
   const [ countryFilter, setCountryFilter] = useState('')
-  const [ selectedCountry, setSelectedCountry] = useState(null)
+  const [ currentCountry, setCurrentCountry] = useState(null)
+  const [ currentWeather, setCurrentWeather] = useState(null)
 
-  const hook = () => {
+  const getCountries = () => {
     axios
       .get('https://restcountries.eu/rest/v2/all')
       .then(response => {
@@ -17,25 +18,40 @@ const App = () => {
       })
   }
 
-  useEffect(hook, [])
+  const getWeather = () => {
+    const WEATHERSTACK_API_KEY = process.env.REACT_APP_API_KEY
+    if (currentCountry) {
+      axios
+        .get(`http://api.weatherstack.com/current?access_key=${WEATHERSTACK_API_KEY}&query=${currentCountry.capital}`)
+        .then(response => {
+          setCurrentWeather(response.data)
+        })
+    } else {
+      setCurrentWeather(null)
+    }
+  }
 
   const handleCountryFilterChange = (event) => {
     setCountryFilter(event.target.value)
-    setSelectedCountry(null)
+    setCurrentWeather(null)
+    setCurrentCountry(null)
   }
 
-  const countriesToShow = countryFilter
-    ? countries.filter(country => country.name.toLowerCase().includes(countryFilter.toLowerCase()))
-    : []
+  useEffect(getCountries, [])
+  useEffect(getWeather, [currentCountry, countryFilter])
 
-  const currentCountry = selectedCountry || (countriesToShow.length === 1 && countriesToShow[0]);
+  const countriesToShow = countries.filter(country => countryFilter && country.name.toLowerCase().includes(countryFilter.toLowerCase()))
+
+  if (countriesToShow.length === 1 && !currentCountry) {
+    setCurrentCountry(countriesToShow[0])
+  }
 
   return (
     <div>
       <Filter { ...{ countryFilter, handleCountryFilterChange } } />
       {currentCountry
-         ? <Country country={currentCountry} />
-         : <CountryList countries={countriesToShow} setSelectedCountry={setSelectedCountry} />
+         ? <Country country={currentCountry} weather={currentWeather} />
+         : <CountryList countries={countriesToShow} setCurrentCountry={setCurrentCountry} />
       }
     </div>
   )

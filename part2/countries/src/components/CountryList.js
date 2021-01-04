@@ -1,6 +1,6 @@
 import React from 'react'
 
-const CountryList = ({ countries, setSelectedCountry }) => {
+const CountryList = ({ countries, setCurrentCountry }) => {
   if (!countries.length) {
     return null
   } else if (countries.length > 10) {
@@ -12,7 +12,7 @@ const CountryList = ({ countries, setSelectedCountry }) => {
       {countries.map((country) => (
         <div key={country.name} country={country}>
           {country.name}
-          <button onClick={() => setSelectedCountry(country)}>show</button>
+          <button onClick={() => setCurrentCountry(country)}>show</button>
         </div>
       ))}
     </div>
