@@ -22,7 +22,7 @@ const App = () => {
     setNewNumber(event.target.value)
   }
 
-  const handlenameFilterChange = (event) => {
+  const handleNameFilterChange = (event) => {
     setNameFilter(event.target.value)
   }
 
@@ -49,7 +49,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
-      <Filter { ...{ nameFilter, handlenameFilterChange } } />
+      <Filter { ...{ nameFilter, handleNameFilterChange } } />
       <h2>Add a new</h2>
       <PersonForm {...{ handleSubmit, newName, handleNameChange, newNumber, handleNumberChange } } />
       <h2>Numbers</h2>

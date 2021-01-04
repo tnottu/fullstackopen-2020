@@ -1,8 +1,8 @@
 import React from 'react'
 
-const Filter = ({ nameFilter, handlenameFilterChange }) => (
+const Filter = ({ nameFilter, handleNameFilterChange }) => (
   <div>
-    filter shown with: <input value={nameFilter} onChange={handlenameFilterChange} />
+    filter shown with: <input value={nameFilter} onChange={handleNameFilterChange} />
   </div>
 )
 
