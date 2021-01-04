@@ -7,6 +7,7 @@ import CountryList from './components/CountryList'
 const App = () => {
   const [ countries, setCountries ] = useState([])
   const [ countryFilter, setCountryFilter] = useState('')
+  const [ selectedCountry, setSelectedCountry] = useState(null)
 
   const hook = () => {
     axios
@@ -20,18 +21,21 @@ const App = () => {
 
   const handleCountryFilterChange = (event) => {
     setCountryFilter(event.target.value)
+    setSelectedCountry(null)
   }
 
   const countriesToShow = countryFilter
     ? countries.filter(country => country.name.toLowerCase().includes(countryFilter.toLowerCase()))
     : []
 
+  const currentCountry = selectedCountry || (countriesToShow.length === 1 && countriesToShow[0]);
+
   return (
     <div>
       <Filter { ...{ countryFilter, handleCountryFilterChange } } />
-      {countriesToShow.length === 1
-         ? <Country country={countriesToShow[0]} />
-         : <CountryList countries={countriesToShow} />
+      {currentCountry
+         ? <Country country={currentCountry} />
+         : <CountryList countries={countriesToShow} setSelectedCountry={setSelectedCountry} />
       }
     </div>
   )
