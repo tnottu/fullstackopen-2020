@@ -3,6 +3,7 @@ import axios from 'axios'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
+import personService from './services/persons'
 
 const App = () => {
   const [ persons, setPersons ] = useState([])
@@ -11,10 +12,10 @@ const App = () => {
   const [ nameFilter, setNameFilter] = useState('')
 
   const hook = () => {
-    axios
-      .get('http://localhost:3001/persons')
-      .then(response => {
-        setPersons(response.data)
+    personService
+      .getAll()
+      .then(persons => {
+        setPersons(persons)
       })
   }
 
@@ -45,12 +46,10 @@ const App = () => {
       number: newNumber,
     };
 
-    const baseUrl = 'http://localhost:3001/persons'
-
-    axios
-      .post(baseUrl, newPerson)
-      .then(response => {
-        setPersons([...persons, response.data])
+    personService
+      .create(newPerson)
+      .then(person => {
+        setPersons([...persons, person])
         setNewName('')
         setNewNumber('')
       })
