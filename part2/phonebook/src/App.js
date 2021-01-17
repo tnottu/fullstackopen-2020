@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react'
 import axios from 'axios'
+import Notification from './components/Notification'
 import Filter from './components/Filter'
 import PersonForm from './components/PersonForm'
 import Persons from './components/Persons'
@@ -10,6 +11,7 @@ const App = () => {
   const [ newName, setNewName ] = useState('')
   const [ newNumber, setNewNumber ] = useState('')
   const [ nameFilter, setNameFilter] = useState('')
+  const [ notificationMessage, setNotificationMessage ] = useState(null)
 
   const hook = () => {
     personService
@@ -52,6 +54,10 @@ const App = () => {
         setPersons(persons.map(person => person.id === updatedPerson.id ? updatedPerson : person))
         setNewName('')
         setNewNumber('')
+        setNotificationMessage(`Updated ${person.name}`)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
   }
 
@@ -78,6 +84,10 @@ const App = () => {
         setPersons([...persons, person])
         setNewName('')
         setNewNumber('')
+        setNotificationMessage(`Created ${person.name}`)
+        setTimeout(() => {
+          setNotificationMessage(null)
+        }, 5000)
       })
 
   }
@@ -89,6 +99,7 @@ const App = () => {
   return (
     <div>
       <h2>Phonebook</h2>
+      <Notification message={notificationMessage} />
       <Filter { ...{ nameFilter, handleNameFilterChange } } />
       <h2>Add a new</h2>
       <PersonForm {...{ handleSubmit, newName, handleNameChange, newNumber, handleNumberChange } } />
