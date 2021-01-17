@@ -40,12 +40,21 @@ const App = () => {
       return
     }
 
-    setPersons([...persons, {
+    const newPerson = {
       name: newName,
       number: newNumber,
-    }])
-    setNewName('')
-    setNewNumber('')
+    };
+
+    const baseUrl = 'http://localhost:3001/persons'
+
+    axios
+      .post(baseUrl, newPerson)
+      .then(response => {
+        setPersons([...persons, response.data])
+        setNewName('')
+        setNewNumber('')
+      })
+
   }
 
   const personsToShow = nameFilter
